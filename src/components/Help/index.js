@@ -2,7 +2,6 @@ import React from 'react';
 import { parseISO, formatRelative } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Alert } from 'react-native';
 
 import {
   Container,
@@ -13,7 +12,7 @@ import {
   Question,
 } from './styles';
 
-export default function Help({ data }) {
+export default function Help({ data, onDetail }) {
   const dateParsed = formatRelative(parseISO(data.createdAt), new Date(), {
     locale: pt,
     addSuffix: true,
@@ -21,12 +20,8 @@ export default function Help({ data }) {
 
   const answered = Boolean(data.answered_at);
 
-  function handleClick() {
-    Alert.alert('Teste', String(data.id));
-  }
-
   return (
-    <Container onPress={handleClick}>
+    <Container onPress={onDetail}>
       <Header>
         <Status>
           <Icon

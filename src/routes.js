@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import SignIn from '~/pages/SignIn';
 import Checkin from '~/pages/Checkin';
 import HelpOrder from '~/pages/HelpOrder';
+import HelpOrderDetail from '~/pages/HelpOrder/HelpOrderDetail';
 import Configuration from '~/pages/Configuration';
 
 export default (signed = false) =>
@@ -20,7 +21,32 @@ export default (signed = false) =>
         App: createBottomTabNavigator(
           {
             Checkin,
-            HelpOrder,
+            Help: {
+              screen: createStackNavigator(
+                {
+                  HelpOrder,
+                  HelpOrderDetail,
+                },
+                {
+                  defaultNavigationOptions: {
+                    headerShown: false,
+                    // headerTransparent: true,
+                    // headerTintColor: '#FFF',
+                    // headerLeftContainerStyle: {
+                    // marginLeft: 20,
+                    // },
+                  },
+                }
+              ),
+
+              navigationOptions: {
+                tabBarVisible: true,
+                tabBarLabel: 'Pedir Ajuda',
+                tabBarIcon: ({ tintColor }) => (
+                  <Icon name="help" size={20} color={tintColor} />
+                ),
+              },
+            },
             Configuration,
           },
           {

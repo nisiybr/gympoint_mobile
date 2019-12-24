@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import api from '~/services/api';
 import HelpItem from '~/components/Help';
 
@@ -20,8 +19,10 @@ export default function HelpOrder({ navigation }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  function handleDetail(item) {
+    navigation.navigate('HelpOrderDetail', item);
+  }
   function handleHelp() {}
-
   return (
     <Container>
       <HelpButton onPress={handleHelp}>
@@ -30,15 +31,17 @@ export default function HelpOrder({ navigation }) {
       <HelpList
         data={helps}
         keyExtractor={item => String(item.id)}
-        renderItem={({ item }) => <HelpItem data={item} />}
+        renderItem={({ item }) => (
+          <HelpItem onDetail={() => handleDetail(item)} data={item} />
+        )}
       />
     </Container>
   );
 }
 
-HelpOrder.navigationOptions = {
-  tabBarLabel: 'Pedir Ajuda',
-  tabBarIcon: ({ tintColor }) => (
-    <Icon name="help" size={20} color={tintColor} />
-  ),
-};
+// HelpOrder.navigationOptions = {
+//   tabBarLabel: 'Pedir Ajuda',
+//   tabBarIcon: ({ tintColor }) => (
+//     <Icon name="help" size={20} color={tintColor} />
+//   ),
+// };
