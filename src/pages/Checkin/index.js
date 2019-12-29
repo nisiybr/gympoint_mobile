@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
 import { useSelector } from 'react-redux';
-import { Alert } from 'react-native';
+import { Alert, ActivityIndicator } from 'react-native';
 import api from '~/services/api';
 import CheckinItem from '~/components/Checkin';
 
@@ -15,6 +16,7 @@ import {
 
 export default function Checkin() {
   const [checkins, setCheckins] = useState([]);
+  const [loading, setLoading] = useState(false);
   const profile = useSelector(state => state.user.profile);
 
   async function loadCheckins() {
@@ -45,14 +47,28 @@ export default function Checkin() {
   }, []);
 
   async function handleCheckin() {
-    await api.post(`students/${profile.id}/checkins`);
-    loadCheckins();
+    try {
+      setLoading(true);
+      const response = await api.post(`students/${profile.id}/checkins`);
+      loadCheckins();
+      setLoading(false);
+    } catch (err) {
+      const msg = err.response.data.error
+        ? err.response.data.error
+        : 'Falha no checkin';
+      Alert.alert('Erro', msg);
+      setLoading(false);
+    }
   }
 
   return (
     <Container>
-      <CheckinButton onPress={handleCheckin}>
-        <CheckinButtonText>Novo check-in</CheckinButtonText>
+      <CheckinButton loading={loading} onPress={handleCheckin}>
+        {loading ? (
+          <ActivityIndicator color="FFF" />
+        ) : (
+          <CheckinButtonText>Novo check-in</CheckinButtonText>
+        )}
       </CheckinButton>
       <CheckinList
         data={checkins}

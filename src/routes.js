@@ -9,6 +9,7 @@ import SignIn from '~/pages/SignIn';
 import Checkin from '~/pages/Checkin';
 import HelpOrder from '~/pages/HelpOrder';
 import HelpOrderDetail from '~/pages/HelpOrder/HelpOrderDetail';
+import HelpOrderNew from '~/pages/HelpOrder/HelpOrderNew';
 import Configuration from '~/pages/Configuration';
 
 export default (signed = false) =>
@@ -26,6 +27,7 @@ export default (signed = false) =>
                 {
                   HelpOrder,
                   HelpOrderDetail,
+                  HelpOrderNew,
                 },
                 {
                   defaultNavigationOptions: {

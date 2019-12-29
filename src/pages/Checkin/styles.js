@@ -12,6 +12,7 @@ export const CheckinButton = styled(RectButton)`
   background: #ee4e62;
   align-items: center;
   justify-content: center;
+  opacity: ${props => (props.loading ? 0.7 : 1)};
 `;
 export const CheckinButtonText = styled.Text`
   position: absolute;
