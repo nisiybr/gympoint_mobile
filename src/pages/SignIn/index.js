@@ -21,10 +21,11 @@ export default function SignIn() {
   const dispatch = useDispatch();
 
   const schema = Yup.object().shape({
-    username: Yup.number('')
+    username: Yup.number()
+      .typeError('O ID de cadastro informado deve ser um número')
+      .required('Favor informar o seu id de usuário')
       .integer('O código informado deve ser um número inteiro')
-      .positive('O código informado deve ser um número positivo')
-      .required('Favor informar o seu id de usuário'),
+      .positive('O código informado deve ser um número positivo'),
   });
 
   async function handleSubmit() {

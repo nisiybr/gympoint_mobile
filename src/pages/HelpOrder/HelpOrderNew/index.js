@@ -23,29 +23,38 @@ export default function HelpOrderNew({ navigation }) {
 
   const profile = useSelector(state => state.user.profile);
 
+  async function newHelpOrder() {
+    const response = await api.post(`students/${profile.id}/help-orders`, {
+      question: help,
+    });
+    return response;
+  }
+
   async function handleSubmit() {
     try {
       const schema = Yup.object().shape({
-        help: Yup.string().required(),
+        help: Yup.string().required(
+          'É necessário preencher o campo de pedido de auxílio.'
+        ),
       });
-      if (
-        !(await schema.isValid({
-          help,
-        }))
-      ) {
-        Alert.alert(
-          'Erro de Validação',
-          'Pedido de auxilio não pode ficar em branco'
-        );
-        return;
-      }
 
-      setLoading(true);
-      const response = await api.post(`students/${profile.id}/help-orders`, {
-        question: help,
-      });
-      setLoading(false);
-      navigation.navigate('HelpOrder', response.data);
+      schema
+        .isValid({
+          help,
+        })
+        .then(valid => {
+          if (valid) {
+            setLoading(true);
+            newHelpOrder();
+            setLoading(false);
+            navigation.navigate('HelpOrder');
+          } else {
+            schema.validate({ help }).catch(err => {
+              Alert.alert('Erro de Validação', err.message);
+              console.tron.log(err);
+            });
+          }
+        });
     } catch (err) {
       console.tron.log(err);
       setLoading(false);
